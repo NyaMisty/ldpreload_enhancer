@@ -787,6 +787,7 @@ static const char *enhancer_parse_config_item(const char *ConfigStr, TEnhancerCo
     ptr=enhancer_config_tok(ConfigStr, &Name);
     while (ptr)
     {
+        // fprintf(stderr, "token: %s\n", Name);
         if (strcmp(Name,"\n")==0) break;
 
         val=enhancer_match_token_from_list(Name, EnhancerTokNames);
@@ -1167,12 +1168,14 @@ static const char *enhancer_add_config(const char *ConfigStr, const char *Functi
 //enhancer_add_config
 static void enhancer_read_prog_config(const char *Config)
 {
+    // fprintf(stderr, "prog full config: %s\n", Config);
     char *Tempstr=NULL;
     const char *ptr, *dividers="#{} \r\n";
 
     ptr=enhancer_config_tok(Config, &Tempstr);
     while (ptr)
     {
+        // fprintf(stderr, "prog token: %s\n", Tempstr);
         if (Tempstr && strlen(Tempstr))
         {
             if (strcmp(Tempstr,"{")==0) /* do nothing  */;
@@ -1185,7 +1188,13 @@ static void enhancer_read_prog_config(const char *Config)
             else if (strcmp(Tempstr,"}")==0) break;
             else
             {
-                ptr=enhancer_add_config(ptr, Tempstr);
+                const char *linestart = ptr;
+                while ((*ptr !='\n') && (*ptr != '\0')) ptr++;
+                char *full_line = calloc(ptr - linestart + 1, 1);
+                strncpy(full_line, linestart, ptr - linestart);
+                // fprintf(stderr, "Adding config func %s, line: %s\n", Tempstr, full_line);
+                enhancer_add_config(full_line, Tempstr);
+                free(full_line);
             }
         }
         ptr=enhancer_config_tok(ptr, &Tempstr);
