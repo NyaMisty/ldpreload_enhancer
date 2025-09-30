@@ -3,6 +3,7 @@
 #include "actions.h"
 #include "net.h"
 #include "socks.h"
+#include "socks5.h"
 #include <dlfcn.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -86,7 +87,8 @@ int connect(int socket, const struct sockaddr *address, socklen_t address_len)
         if (Flags & FLAG_REDIRECT)
         {
             close(socket);
-            if (strncmp(sockinfo->redirect, "socks:", 6)==0) socket=socks_connect(sockinfo->redirect, sockinfo->address, sockinfo->port);
+            if (strncmp(sockinfo->redirect, "socks5:", 7)==0) socket=socks5_connect(sockinfo->redirect, sockinfo->address, sockinfo->port);
+            else if (strncmp(sockinfo->redirect, "socks:", 6)==0) socket=socks_connect(sockinfo->redirect, sockinfo->address, sockinfo->port);
             else socket=net_connect(sockinfo->redirect);
             if (socket==-1) result=-1;
             else result=0;

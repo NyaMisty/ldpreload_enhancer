@@ -1,4 +1,4 @@
-OBJ=common.o vars.o iplist.o sockinfo.o actions.o exit.o file_shred.o hooks.o dl_hooks.o exec_hooks.o time_hooks.o file_hooks.o filesys_hooks.o socket_hooks.o config.o net.o socks.o @X11_HOOKS_OBJ@
+OBJ=common.o vars.o iplist.o sockinfo.o actions.o exit.o file_shred.o hooks.o dl_hooks.o exec_hooks.o time_hooks.o file_hooks.o filesys_hooks.o socket_hooks.o config.o net.o socks.o socks5.o @X11_HOOKS_OBJ@
 CFLAGS=-g -fPIC @CFLAGS@ 
 FLAGS=$(CFLAGS) @DEFS@
 CC=gcc
@@ -65,6 +65,8 @@ net.o: net.c net.h common.h
 socks.o: socks.c socks.h common.h
 	$(CC) $(FLAGS) -c socks.c
 
+socks5.o: socks5.c socks5.h common.h
+	$(CC) $(FLAGS) -c socks5.c
 
 
 clean:
