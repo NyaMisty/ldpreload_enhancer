@@ -223,6 +223,7 @@ int accept(int socket, struct sockaddr *address, socklen_t *address_len)
     TSockInfo *sockinfo;
 
     fd=enhancer_real_accept(socket, address, address_len);
+    if (fd==-1) return(-1);
 
     sockinfo=enhancer_createSockInfo(FUNC_ACCEPT, fd, address, *address_len);
     Flags=enhancer_checkconfig_socket_function(FUNC_ACCEPT, "accept", sockinfo);
