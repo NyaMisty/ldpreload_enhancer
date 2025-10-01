@@ -84,6 +84,7 @@ static void enhancer_exec_pack_destroy(char **pack)
     free(pack);
 }
 
+#ifdef HAVE_EXEC_HOOKS
 
 int system(const char *command)
 {
@@ -173,6 +174,7 @@ int execl(const char *path, const char *first_arg, ...)
 
     return(result);
 }
+#endif
 
 
 /*

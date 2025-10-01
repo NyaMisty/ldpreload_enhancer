@@ -704,6 +704,12 @@ enable_largefile
 enable_x11
 with_x_includes
 with_x_libraries
+enable_dl
+enable_exec
+enable_time
+enable_file
+enable_filesys
+enable_socket
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1333,6 +1339,12 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-largefile     omit support for large files
   --enable-x11    use libx11 hooks
+  --disable-dl          disable dynamic loader hooks
+  --disable-exec        disable exec()/fork() hooks
+  --disable-time        disable time-related hooks
+  --disable-file        disable file I/O hooks
+  --disable-filesys     disable filesystem hooks
+  --disable-socket      disable socket/network hooks
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -3879,6 +3891,56 @@ then :
 fi
 
 
+# New options to enable/disable individual hooks (default: enabled)
+# Check whether --enable-dl was given.
+if test ${enable_dl+y}
+then :
+  enableval=$enable_dl; cf_dl=$enableval
+else $as_nop
+  cf_dl=yes
+fi
+
+# Check whether --enable-exec was given.
+if test ${enable_exec+y}
+then :
+  enableval=$enable_exec; cf_exec=$enableval
+else $as_nop
+  cf_exec=yes
+fi
+
+# Check whether --enable-time was given.
+if test ${enable_time+y}
+then :
+  enableval=$enable_time; cf_time=$enableval
+else $as_nop
+  cf_time=yes
+fi
+
+# Check whether --enable-file was given.
+if test ${enable_file+y}
+then :
+  enableval=$enable_file; cf_file=$enableval
+else $as_nop
+  cf_file=yes
+fi
+
+# Check whether --enable-filesys was given.
+if test ${enable_filesys+y}
+then :
+  enableval=$enable_filesys; cf_filesys=$enableval
+else $as_nop
+  cf_filesys=yes
+fi
+
+# Check whether --enable-socket was given.
+if test ${enable_socket+y}
+then :
+  enableval=$enable_socket; cf_socket=$enableval
+else $as_nop
+  cf_socket=yes
+fi
+
+
 
 
 if test "$cf_x11" = "yes"
@@ -4012,6 +4074,37 @@ printf "%s\n" "#define HAVE_X11 1" >>confdefs.h
 X11_HOOKS_OBJ="x11_hooks.o"
 
 fi
+fi
+
+# Resolve per-hook enables into macros and object substitutions
+if test "$cf_dl" != "no"; then
+  printf "%s\n" "#define HAVE_DL_HOOKS 1" >>confdefs.h
+
+fi
+
+if test "$cf_exec" != "no"; then
+  printf "%s\n" "#define HAVE_EXEC_HOOKS 1" >>confdefs.h
+
+fi
+
+if test "$cf_time" != "no"; then
+  printf "%s\n" "#define HAVE_TIME_HOOKS 1" >>confdefs.h
+
+fi
+
+if test "$cf_file" != "no"; then
+  printf "%s\n" "#define HAVE_FILE_HOOKS 1" >>confdefs.h
+
+fi
+
+if test "$cf_filesys" != "no"; then
+  printf "%s\n" "#define HAVE_FILESYS_HOOKS 1" >>confdefs.h
+
+fi
+
+if test "$cf_socket" != "no"; then
+  printf "%s\n" "#define HAVE_SOCKET_HOOKS 1" >>confdefs.h
+
 fi
 
 

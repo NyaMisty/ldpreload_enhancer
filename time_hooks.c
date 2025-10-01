@@ -10,7 +10,6 @@ int (*enhancer_real_gettimeofday)(struct timeval *restrict tv, void *restrict tz
 int (*enhancer_real_settimeofday)(const struct timeval *tv, const struct timezone *tz)=NULL;
 int (*enhancer_real_setitimer)(__itimer_which_t Type, const struct itimerval *new, struct itimerval *curr)=NULL;
 
-
 time_t ChangeTime(time_t tval, const char *TimeMod)
 {
     time_t mod=0;
@@ -52,6 +51,16 @@ time_t ChangeTime(time_t tval, const char *TimeMod)
     return(tval);
 }
 
+time_t enhancer_gettime()
+{
+    struct timeval tv;
+
+    enhancer_real_gettimeofday(&tv, NULL);
+    return(tv.tv_sec);
+}
+
+#ifdef HAVE_TIME_HOOKS
+
 
 time_t time(time_t *RetVal)
 {
@@ -77,13 +86,6 @@ time_t time(time_t *RetVal)
     return(tval);
 }
 
-time_t enhancer_gettime()
-{
-    struct timeval tv;
-
-    enhancer_real_gettimeofday(&tv, NULL);
-    return(tv.tv_sec);
-}
 
 #ifndef GETTIMEOFDAY_NONE
 
@@ -160,6 +162,7 @@ int setitimer(__itimer_which_t Type, const struct itimerval * new, struct itimer
 }
 
 
+#endif
 
 void enhancer_time_hooks()
 {

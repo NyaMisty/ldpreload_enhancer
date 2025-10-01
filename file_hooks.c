@@ -24,6 +24,8 @@ int (*enhancer_real_renameat2)(int fromfd, const char *from, int tofd, const cha
 int (*enhancer_real_fsync)(int fd)=NULL;
 int (*enhancer_real_fdatasync)(int fd)=NULL;
 
+#ifdef HAVE_FILE_HOOKS
+
 typedef struct
 {
     char *path;
@@ -531,6 +533,7 @@ int fdatasync(int fd)
 }
 
 
+#endif
 
 
 void enhancer_file_hooks()

@@ -44,6 +44,8 @@ file_hooks.o: file_hooks.c file_hooks.h common.h
 filesys_hooks.o: filesys_hooks.c filesys_hooks.h common.h
 	$(CC) $(FLAGS) -c filesys_hooks.c
 
+# Individual hook objects build unconditionally; code paths are gated by macros
+
 dl_hooks.o: dl_hooks.c dl_hooks.h common.h
 	$(CC) $(FLAGS) -c dl_hooks.c
 

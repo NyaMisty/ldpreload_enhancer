@@ -1,8 +1,8 @@
-OBJ=common.o vars.o iplist.o sockinfo.o actions.o exit.o file_shred.o hooks.o dl_hooks.o exec_hooks.o time_hooks.o file_hooks.o filesys_hooks.o socket_hooks.o config.o net.o socks.o 
+OBJ=common.o vars.o iplist.o sockinfo.o actions.o exit.o file_shred.o hooks.o dl_hooks.o exec_hooks.o time_hooks.o file_hooks.o filesys_hooks.o socket_hooks.o config.o net.o socks.o socks5.o 
 CFLAGS=-g -fPIC -g -O2 
-FLAGS=$(CFLAGS) -DPACKAGE_NAME=\"enhancer\" -DPACKAGE_TARNAME=\"enhancer\" -DPACKAGE_VERSION=\"1.7\" -DPACKAGE_STRING=\"enhancer\ 1.7\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DSTDC_HEADERS=1 -D_FILE_OFFSET_BITS=64 -Drestrict=__restrict -DHAVE_LIBC=1 -DHAVE_UNSHARE=1 -DGETTIMEOFDAY_TRAD=1
+FLAGS=$(CFLAGS) -DPACKAGE_NAME=\"enhancer\" -DPACKAGE_TARNAME=\"enhancer\" -DPACKAGE_VERSION=\"1.8\" -DPACKAGE_STRING=\"enhancer\ 1.8\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -Drestrict=__restrict__ -DHAVE_DL_HOOKS=1 -DHAVE_EXEC_HOOKS=1 -DHAVE_SOCKET_HOOKS=1 -DHAVE_LIBC=1 -DHAVE_UNSHARE=1 -DGETTIMEOFDAY_TZVOID=1
 CC=gcc
-VERSION=1.7
+VERSION=1.8
 
 
 all: enhancer.so
@@ -44,6 +44,8 @@ file_hooks.o: file_hooks.c file_hooks.h common.h
 filesys_hooks.o: filesys_hooks.c filesys_hooks.h common.h
 	$(CC) $(FLAGS) -c filesys_hooks.c
 
+# Individual hook objects build unconditionally; code paths are gated by macros
+
 dl_hooks.o: dl_hooks.c dl_hooks.h common.h
 	$(CC) $(FLAGS) -c dl_hooks.c
 
@@ -65,6 +67,8 @@ net.o: net.c net.h common.h
 socks.o: socks.c socks.h common.h
 	$(CC) $(FLAGS) -c socks.c
 
+socks5.o: socks5.c socks5.h common.h
+	$(CC) $(FLAGS) -c socks5.c
 
 
 clean:

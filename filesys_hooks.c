@@ -15,6 +15,8 @@ int (*enhancer_real_fchdir) (int fd)=NULL;
 int (*enhancer_real_chroot) (const char *path)=NULL;
 int (*enhancer_real_fchroot) (int fd)=NULL;
 
+#ifdef HAVE_FILESYS_HOOKS
+
 int fchown (int fd, uid_t owner, gid_t group)
 {
     int result, Flags;
@@ -180,6 +182,7 @@ int fchroot(int fd)
     return(result);
 }
 
+#endif
 
 
 void enhancer_filesys_hooks()

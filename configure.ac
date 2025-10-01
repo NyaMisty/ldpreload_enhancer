@@ -15,6 +15,14 @@ AC_ARG_ENABLE(x11, [  --enable-x11    use libx11 hooks], cf_x11=$enableval)
 AC_ARG_WITH(x-includes, [  --with-x-includes       path to X11 includes directory], X11INC="-I$withval" )
 AC_ARG_WITH(x-libraries, [  --with-x-libraries     path to X11 libraries directory], X11LIB="-L$withval" )
 
+# New options to enable/disable individual hooks (default: enabled)
+AC_ARG_ENABLE([dl],       [  --disable-dl          disable dynamic loader hooks],        [cf_dl=$enableval],       [cf_dl=yes])
+AC_ARG_ENABLE([exec],     [  --disable-exec        disable exec()/fork() hooks],         [cf_exec=$enableval],     [cf_exec=yes])
+AC_ARG_ENABLE([time],     [  --disable-time        disable time-related hooks],          [cf_time=$enableval],     [cf_time=yes])
+AC_ARG_ENABLE([file],     [  --disable-file        disable file I/O hooks],              [cf_file=$enableval],     [cf_file=yes])
+AC_ARG_ENABLE([filesys],  [  --disable-filesys     disable filesystem hooks],            [cf_filesys=$enableval],  [cf_filesys=yes])
+AC_ARG_ENABLE([socket],   [  --disable-socket      disable socket/network hooks],        [cf_socket=$enableval],   [cf_socket=yes])
+
 
 
 if test "$cf_x11" = "yes"
@@ -42,6 +50,31 @@ then
 AC_DEFINE([HAVE_X11])
 AC_SUBST([X11_HOOKS_OBJ], "x11_hooks.o")
 fi
+fi
+
+# Resolve per-hook enables into macros and object substitutions
+if test "$cf_dl" != "no"; then
+  AC_DEFINE([HAVE_DL_HOOKS])
+fi
+
+if test "$cf_exec" != "no"; then
+  AC_DEFINE([HAVE_EXEC_HOOKS])
+fi
+
+if test "$cf_time" != "no"; then
+  AC_DEFINE([HAVE_TIME_HOOKS])
+fi
+
+if test "$cf_file" != "no"; then
+  AC_DEFINE([HAVE_FILE_HOOKS])
+fi
+
+if test "$cf_filesys" != "no"; then
+  AC_DEFINE([HAVE_FILESYS_HOOKS])
+fi
+
+if test "$cf_socket" != "no"; then
+  AC_DEFINE([HAVE_SOCKET_HOOKS])
 fi
 
 

@@ -20,7 +20,7 @@ int (*enhancer_real_accept)(int sockfd, struct sockaddr *addr, socklen_t *addrle
 int (*enhancer_real_getaddrinfo)(const char *name, const char *service, const struct addrinfo *hints, struct addrinfo **res)=NULL;
 struct hostent *(*enhancer_real_gethostbyname)(const char *name)=NULL;
 
-
+#ifdef HAVE_SOCKET_HOOKS
 
 /*
 int socket(int family, int type, int protocol)
@@ -294,6 +294,8 @@ int getaddrinfo(const char *name, const char *service, const struct addrinfo *hi
     destroy(Redirect);
     return(result);
 }
+
+#endif
 
 void enhancer_socket_hooks()
 {

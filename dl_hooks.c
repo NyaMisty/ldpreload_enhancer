@@ -14,6 +14,8 @@ void *enhancer_dlopen(const char *filename, int flag)
     return(enhancer_real_dlopen(filename, flag));
 }
 
+#ifdef HAVE_DL_HOOKS
+
 void *dlopen(const char *path, int flags)
 {
     char *Redirect=NULL;
@@ -53,7 +55,7 @@ int dlclose(void *handle)
     return(enhancer_real_dlclose(handle));
 }
 
-
+#endif
 
 void enhancer_dl_hooks()
 {
