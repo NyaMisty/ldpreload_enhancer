@@ -222,6 +222,12 @@ int accept(int socket, struct sockaddr *address, socklen_t *address_len)
     int Flags, fd=-1, val;
     TSockInfo *sockinfo;
 
+    char tmpbuf[48] = {0};
+    socklen_t tmpbuf_len = sizeof(tmpbuf);
+    if (!address && !address_len) {
+        address_len = &tmpbuf_len;
+        address = (struct sockaddr *)tmpbuf;
+    }
     fd=enhancer_real_accept(socket, address, address_len);
     if (fd==-1) return(-1);
 
