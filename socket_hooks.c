@@ -86,10 +86,23 @@ int connect(int socket, const struct sockaddr *address, socklen_t address_len)
 
         if (Flags & FLAG_REDIRECT)
         {
-            close(socket);
-            if (strncmp(sockinfo->redirect, "socks5:", 7)==0) socket=socks5_connect(sockinfo->redirect, sockinfo->address, sockinfo->port);
-            else if (strncmp(sockinfo->redirect, "socks:", 6)==0) socket=socks_connect(sockinfo->redirect, sockinfo->address, sockinfo->port);
-            else socket=net_connect(sockinfo->redirect);
+            fprintf(stderr, "[enhancer] Redirecting connection to %s\n", sockinfo->redirect);
+            if (strncmp(sockinfo->redirect, "socks5:", 7)==0) {
+                close(socket);
+                socket=socks5_connect(sockinfo->redirect, sockinfo->address, sockinfo->port);
+            }
+            else if (strncmp(sockinfo->redirect, "socks:", 6)==0) {
+                close(socket);
+                socket=socks_connect(sockinfo->redirect, sockinfo->address, sockinfo->port);
+            }
+            else {
+                // close(socket);
+                // reuse socket
+                // socket=net_connect(sockinfo->redirect);
+                address=net_sockaddr_from_url(sockinfo->redirect);
+                address_len=net_get_salen(address);
+                result=enhancer_real_connect(socket, address, address_len);
+            }
             if (socket==-1) result=-1;
             else result=0;
         }
